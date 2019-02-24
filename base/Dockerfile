@@ -35,8 +35,10 @@ RUN echo http://mirror.yandex.ru/mirrors/alpine/v3.5/main > /etc/apk/repositorie
     chmod +x kompose && \
     mv ./kompose /usr/local/bin/kompose
 
-RUN apk add libc6-compat && \
-    mkdir /lib64 && ln -s /lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+RUN apk --no-cache add ca-certificates wget && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk && \
+    apk add glibc-2.28-r0.apk
 
 USER groovy
 
